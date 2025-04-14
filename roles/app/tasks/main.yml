@@ -4,19 +4,32 @@
     path: /var/www/html
     state: directory
     mode: '0755'
+  become: yes  # Added become for elevated privileges
 
 - name: Upload website tarball
   copy:
-    src: webserver.tar         # Change if you're using index.tar.xz
-    dest: /tmp/webserver.tar   # Or index.tar.xz
+    src: webserver.tar
+    dest: /tmp/webserver.tar
     mode: '0644'
+  become: yes  # Added become for elevated privileges
+
+- name: Debug file existence
+  stat:
+    path: /tmp/webserver.tar
+  register: webserver_tar_stat
+  become: yes  # Added become for elevated privileges
+
+- name: Check if tarball exists
+  debug:
+    var: webserver_tar_stat
 
 - name: Extract website tarball
   unarchive:
-    src: /tmp/webserver.tar    # Or index.tar.xz
+    src: /tmp/webserver.tar
     dest: /var/www/html/
     remote_src: yes
-    extra_opts: [--strip-components=1]  # Optional: avoids nested folders
+    extra_opts: [--strip-components=1]
+  become: yes  # Added become for elevated privileges
 
 - name: Set permissions
   file:
@@ -27,6 +40,7 @@
     group: nginx
     mode: '0755'
   when: ansible_os_family == "RedHat"
+  become: yes  # Added become for elevated privileges
 
 - name: Set permissions (Debian)
   file:
@@ -37,3 +51,4 @@
     group: www-data
     mode: '0755'
   when: ansible_os_family == "Debian"
+  become: yes  # Added become for elevated privileges
