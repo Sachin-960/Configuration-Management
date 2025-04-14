@@ -19,10 +19,6 @@
   register: webserver_tar_stat
   become: yes  # Added become for elevated privileges
 
-- name: Check if tarball exists
-  debug:
-    var: webserver_tar_stat
-
 - name: Extract website tarball
   unarchive:
     src: /tmp/webserver.tar
