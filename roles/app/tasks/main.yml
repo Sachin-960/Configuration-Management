@@ -7,13 +7,13 @@
 
 - name: Upload website tarball
   copy:
-    src: website.tar         # Change if you're using index.tar.xz
-    dest: /tmp/website.tar   # Or index.tar.xz
+    src: webserver.tar         # Change if you're using index.tar.xz
+    dest: /tmp/webserver.tar   # Or index.tar.xz
     mode: '0644'
 
 - name: Extract website tarball
   unarchive:
-    src: /tmp/website.tar.gz    # Or index.tar.xz
+    src: /tmp/webserver.tar    # Or index.tar.xz
     dest: /var/www/html/
     remote_src: yes
     extra_opts: [--strip-components=1]  # Optional: avoids nested folders
