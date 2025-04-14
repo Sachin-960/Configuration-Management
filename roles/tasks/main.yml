@@ -1,0 +1,32 @@
+---
+- name: Install EPEL repo (RedHat)
+  yum:
+    name: epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Update apt cache (Debian)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install base utilities
+  package:
+    name:
+      - vim
+      - curl
+      - git
+      - htop
+    state: present
+
+- name: Install fail2ban
+  package:
+    name: fail2ban
+    state: present
+
+- name: Ensure fail2ban is running
+  service:
+    name: fail2ban
+    state: started
+    enabled: true
+
